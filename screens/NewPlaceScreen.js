@@ -1,6 +1,6 @@
 import { CommonActions } from "@react-navigation/native";
-import React, { useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import React, { useCallback, useState } from "react";
+import { Button, ScrollView, StyleSheet, Text, TextInput } from "react-native";
 import { useDispatch } from "react-redux";
 import ImgPicker from "../components/ImagePicker";
 import LocationPicker from "../components/LocationPicker";
@@ -10,16 +10,25 @@ import { addPlace } from "../Store/PlaceAction";
 const NewPlaceScreen = (props) => {
   const [title, settitle] = useState("");
   const [pickImg, setpickImg] = useState(null);
+  const [pickLocation, setpickLocation] = useState();
   const dispatch = useDispatch();
 
   const submitHandler = () => {
-    dispatch(addPlace(title, pickImg));
+    dispatch(addPlace(title, pickImg, pickLocation));
     props.navigation.dispatch(CommonActions.goBack());
     settitle("");
   };
 
+  const locationPickHandler = useCallback(
+    (location) => {
+      console.log("newLo", location);
+      setpickLocation(location);
+    },
+    [setpickLocation]
+  );
+
   return (
-    <View style={styles.form}>
+    <ScrollView style={styles.form}>
       <Text style={styles.title}>Title</Text>
       <TextInput
         style={styles.textInput}
@@ -27,13 +36,13 @@ const NewPlaceScreen = (props) => {
         onChangeText={(text) => settitle(text)}
       />
       <ImgPicker onPickImg={(imgUri) => setpickImg(imgUri)} />
-      <LocationPicker />
+      <LocationPicker onLocationPick={locationPickHandler} />
       <Button
         title="Add Place"
         color={colors.primary}
         onPress={submitHandler}
       />
-    </View>
+    </ScrollView>
   );
 };
 

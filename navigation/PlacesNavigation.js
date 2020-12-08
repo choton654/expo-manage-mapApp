@@ -2,7 +2,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import { Platform, StyleSheet } from "react-native";
 import { colors } from "../constants/colors";
-import MapScreen from "../screens/MapScreen";
+import MapScreen, { MapScreenOptions } from "../screens/MapScreen";
 import NewPlaceScreen, {
   NewPlaceScreenOptions,
 } from "../screens/NewPlaceScreen";
@@ -34,7 +34,11 @@ const PlacesNavigation = () => {
         component={NewPlaceScreen}
         options={NewPlaceScreenOptions}
       />
-      <Stack.Screen name="Map" component={MapScreen} />
+      <Stack.Screen
+        name="Map"
+        component={MapScreen}
+        options={MapScreenOptions}
+      />
     </Stack.Navigator>
   );
 };
