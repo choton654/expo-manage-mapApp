@@ -10,7 +10,6 @@ import { fetchPlace } from "../Store/PlaceAction";
 const PlaceListScreen = (props) => {
   const { places } = useSelector((state) => state.places);
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(fetchPlace());
   }, [dispatch]);

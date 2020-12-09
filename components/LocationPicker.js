@@ -23,7 +23,7 @@ const LocationPicker = (props) => {
     longitudeDelta: 0.04,
     latitudeDelta: 0.09,
   });
-
+  // geocode api_key 4cb5afdb60e9679b3c9dcbd76f9a3034
   const verifyPermissions = async () => {
     let { status } = await Location.requestPermissionsAsync();
     if (status !== "granted") {
@@ -41,7 +41,6 @@ const LocationPicker = (props) => {
   const { onLocationPick } = props;
   useEffect(() => {
     const { pickedLocation } = mapLocation;
-    console.log("pickLo", pickedLocation);
     if (pickedLocation) {
       setPickedLocation(pickedLocation);
       onLocationPick(pickedLocation);
@@ -60,8 +59,10 @@ const LocationPicker = (props) => {
         timeout: 5000,
       });
       setPickedLocation({
-        lat: location.coords.latitude,
-        lng: location.coords.longitude,
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        longitudeDelta: 0.04,
+        latitudeDelta: 0.09,
       });
     } catch (err) {
       console.log(err);

@@ -21,7 +21,6 @@ const NewPlaceScreen = (props) => {
 
   const locationPickHandler = useCallback(
     (location) => {
-      console.log("newLo", location);
       setpickLocation(location);
     },
     [setpickLocation]

@@ -3,10 +3,16 @@ import { StyleSheet, Text, View, TouchableOpacity, Alert } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { CommonActions } from "@react-navigation/native";
 
-const MapScreen = ({ navigation }) => {
+const MapScreen = ({ navigation, route }) => {
+  // const initialLocation = navigation.getParam("initialLocation");
+  // const readonly = navigation.getParam("readonly");
+
+  const routeParams = route.params ? route.params : {};
+  const { initialLocation, readonly } = routeParams;
+
   const [markerRegion, setmarkerRegion] = useState({
-    longitude: 88.363892,
-    latitude: 22.572645,
+    longitude: initialLocation ? initialLocation.longitude : 88.363892,
+    latitude: initialLocation ? initialLocation.latitude : 22.572645,
     longitudeDelta: 0.04,
     latitudeDelta: 0.09,
   });
@@ -21,6 +27,10 @@ const MapScreen = ({ navigation }) => {
   };
 
   const savePickLocationhandler = useCallback(() => {
+    if (readonly) {
+      return;
+    }
+
     if (!markerRegion) {
       Alert.alert("Error", "Select location", [{ text: "Okay" }]);
       return;
@@ -47,7 +57,7 @@ const MapScreen = ({ navigation }) => {
       onPress={selectLoacationHandler}
     >
       {markerRegion && (
-        <Marker title="Picked Location" coordinate={markerRegion}></Marker>
+        <Marker title="Picked Location" coordinate={markerRegion} />
       )}
     </MapView>
   );
@@ -57,7 +67,11 @@ export default MapScreen;
 
 export const MapScreenOptions = (navData) => {
   const routeParams = navData.route.params ? navData.route.params : {};
-  const { saveLocation } = routeParams;
+  const { saveLocation, readonly } = routeParams;
+  // const readonly = navData.navigation.getParam('readonly');
+  if (readonly) {
+    return {};
+  }
   return {
     headerRight: () => (
       <TouchableOpacity style={styles.headerButton} onPress={saveLocation}>

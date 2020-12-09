@@ -9,20 +9,27 @@ export const PlaceReducer = (state = initState, action) => {
   switch (action.type) {
     case SET_PLACE:
       return {
-        places: action.payload.places
-          ? action.payload.places.map(
-              (p) => new Place(p.id.toString(), p.title, p.imageUri)
-            )
-          : [],
+        places: action.payload.places.map((p) => {
+          return new Place(
+            p.id.toString(),
+            p.title,
+            p.imageUri,
+            p.address,
+            p.lat,
+            p.lng
+          );
+        }),
       };
 
     case ADD_PLACE:
       const newPlace = new Place(
         action.payload.id.toString(),
         action.payload.title,
-        action.payload.newPath
+        action.payload.newPath,
+        action.payload.address,
+        action.payload.cords.lat,
+        action.payload.cords.lng
       );
-      console.log(newPlace);
       return {
         places: state.places.concat(newPlace),
       };
